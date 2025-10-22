@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as htpp;
+import 'package:http/http.dart' as http;
+import 'screens/pokemon_detail.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -41,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> feachPokemon() async{
     const url = 'https://pokeapi.co/api/v2/pokemon?limit=50';
-    final response = await htpp.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(url));
     if(response.statusCode == 200){
       final data = json.decode(response.body);
       setState((){
@@ -72,14 +74,27 @@ class _MyHomePageState extends State<MyHomePage> {
             final pokeId = index + 1;
             final imageUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$pokeId.png';
             return ListTile(
-              leading: Image.network(imageUrl),
-              title: Text(
-                pokemon['name'].toString().toUpperCase(),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold
+                leading: Hero(
+                  tag: pokemon['name'],
+                  child: Image.network(imageUrl),
                 ),
-              ),
+                title: Text(
+                  pokemon['name'].toString().toUpperCase(),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PokemonDetail(
+                    name: pokemon['name'],
+                    url: pokemon['url'],
+                    ),
+                  ),
+                  );
+                },
             );
+
           },
         ),
     );
