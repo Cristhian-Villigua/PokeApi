@@ -5,8 +5,9 @@ import 'package:http/http.dart' as http;
 class PokemonDetail extends StatefulWidget {
   final String name;
   final String url;
+  final Color color;
 
-  const PokemonDetail({super.key, required this.name, required this.url});
+  const PokemonDetail({super.key, required this.name, required this.color, required this.url});
 
   @override
   State<PokemonDetail> createState() => _PokemonDetailState();
